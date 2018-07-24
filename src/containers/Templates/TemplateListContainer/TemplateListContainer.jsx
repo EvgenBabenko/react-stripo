@@ -5,7 +5,6 @@ import T from 'prop-types';
 
 import CommentList from '../../../components/Templates/TemplateList/TemplateList';
 import { getTemplateList } from '../../../store/actions/templateActions';
-import mock from '../../../mock';
 
 class TemplateListContainer extends Component {
   constructor(props) {
@@ -21,7 +20,7 @@ class TemplateListContainer extends Component {
   componentDidMount() {
     const { dispatch } = this.props;
 
-    dispatch(getTemplateList(mock));
+    dispatch(getTemplateList());
   }
 
   render() {

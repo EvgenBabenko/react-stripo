@@ -1,16 +1,17 @@
 import React from 'react';
 import T from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const Template = (props) => {
-  const { name, modified } = props;
+  const { name, modified, id } = props;
 
   return (
     <div>
-      <p>
+      <Link to={`/template/${id}`}>
         {name}
-      </p>
+      </Link>
       <p>
-        {new Date(modified).toLocaleString()}
+        {`Modified: ${new Date(modified).toLocaleString()}`}
       </p>
     </div>
   );
@@ -19,6 +20,7 @@ const Template = (props) => {
 Template.propTypes = {
   name: T.string.isRequired,
   modified: T.number.isRequired,
+  id: T.number.isRequired,
 };
 
 export default Template;
