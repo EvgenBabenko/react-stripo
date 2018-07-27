@@ -18,7 +18,9 @@ class TemplateDetailsContainer extends Component {
   componentDidMount() {
     const { match: { params: { id } } } = this.props;
 
-    const { dispatch } = this.props;
+    const { dispatch, templateDetails } = this.props;
+
+    if (templateDetails) return;
 
     dispatch(getTemplateDetails(parseInt(id, 10)));
   }

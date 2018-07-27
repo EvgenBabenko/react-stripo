@@ -46,8 +46,8 @@ class TemplateDetails extends Component {
     let match;
     const properties = {};
     while (match = regex.exec(string)) {
-      properties[match[1]] = match[2].trim()
-    };
+      properties[match[1]] = match[2].trim();
+    }
 
     return properties;
   }
@@ -109,7 +109,7 @@ class TemplateDetails extends Component {
   submit(values) {
     const { updateTemplate, templateDetails: { id } } = this.props;
 
-    // updateTemplate(id, values);
+    updateTemplate(id, values);
   }
 
   render() {

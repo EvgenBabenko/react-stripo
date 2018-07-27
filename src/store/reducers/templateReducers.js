@@ -4,7 +4,6 @@ import createReducers from '../../helpers/createReducers';
 const initialState = {
   templateList: [],
   templateDetails: null,
-  activeTarget: null,
 };
 
 const actions = {

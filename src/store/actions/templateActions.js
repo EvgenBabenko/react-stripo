@@ -1,28 +1,27 @@
 import types from '../types/templateTypes';
-import mock from '../../mock';
+import server from '../../fakeServer';
+import store from '../store';
 
-export const getTemplateList = () => {
-  const data = mock;
+const fakeServer = server();
 
-  return ({ type: types.GET_TEMPLATE_LIST, data });
+export const getTemplateList = () => async (dispatch) => {
+  const data = await fakeServer.getAll();
+
+  dispatch({ type: types.GET_TEMPLATE_LIST, data });
 };
 
-export const getTemplateDetails = (id) => {
-  const data = mock.find(item => item.id === id);
+export const getTemplateDetails = id => async (dispatch) => {
+  const data = await fakeServer.getOne(id);
 
-  return ({ type: types.GET_TEMPLATE_DETAILS, data });
+  dispatch({ type: types.GET_TEMPLATE_DETAILS, data });
 };
 
-export const updateTemplate = (id, payload) => {
-  const prev = mock.find(item => item.id === id);
-  const index = mock.findIndex(item => item.id === id);
+export const updateTemplate = (id, payload) => async (dispatch) => {
+  const data = await fakeServer.updateItem(id, payload);
 
-  prev.template = payload;
-  prev.modified = Date.now();
+  const index = store.getState().templates.templateList.findIndex(template => template.id === id);
 
-  const data = prev;
-
-  return ({ type: types.UPDATE_TEMPLATE, data, index });
+  dispatch({ type: types.UPDATE_TEMPLATE, data, index });
 };
 
 export const clearTemplateDetails = () => ({ type: types.CLEAR_TEMPLATE_DETAILS });
