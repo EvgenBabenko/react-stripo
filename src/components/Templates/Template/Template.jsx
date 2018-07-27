@@ -1,6 +1,5 @@
 import React from 'react';
 import T from 'prop-types';
-import { Link } from 'react-router-dom';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 

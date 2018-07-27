@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
 import T from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
 
 import FloatingPanel from '../FloatingPanel/FloatingPanel';
 
 import './index.css';
-
-const styles = {
-  templateDetailsRoot: {
-    position: 'relative',
-    top: '128px',
-  },
-};
 
 class TemplateDetails extends Component {
   constructor(props) {
@@ -26,6 +18,13 @@ class TemplateDetails extends Component {
 
     this.templateRef = React.createRef();
     this.editableTags = null;
+
+    this.handleClick = this.handleClick.bind(this);
+    this.handleBlurContext = this.handleBlurContext.bind(this);
+    this.handleChangeContext = this.handleChangeContext.bind(this);
+    this.handleChangeFontSize = this.handleChangeFontSize.bind(this);
+    this.submit = this.submit.bind(this);
+    this.handleClickAway = this.handleClickAway.bind(this);
   }
 
   componentDidMount() {
@@ -42,26 +41,6 @@ class TemplateDetails extends Component {
     });
   }
 
-  handleClick = ({ target }) => {
-    target.classList.add('edit');
-    
-    this.setState({
-      context: target.textContent.trim(),
-      eventTarget: target,
-      isHovering: true,
-    });
-
-    console.log(this.state.eventTarget);
-
-    if (target.hasAttribute('style')) {
-      const styleObject = this.parseStyle(target.getAttribute('style'));
-
-      this.setState({ fontSize: styleObject['font-size'] });
-    } else {
-      this.setState({ fontSize: '' });
-    }
-  }
-
   parseStyle = (string) => {
     const regex = /([\w-]*)\s*:\s*([^;]*)/g;
     let match;
@@ -73,24 +52,49 @@ class TemplateDetails extends Component {
     return properties;
   }
 
-  handleChangeContext = ({ target }) => {
-    this.setState({ context: target.value });
+  handleClick({ target }) {
+    // target.classList.add('edit');
+
+    this.setState({
+      context: target.textContent.trim(),
+      eventTarget: target,
+      isHovering: true,
+    });
+
+    if (target.hasAttribute('style')) {
+      const styleObject = this.parseStyle(target.getAttribute('style'));
+
+      this.setState({ fontSize: styleObject['font-size'] });
+    } else {
+      this.setState({ fontSize: '' });
+    }
   }
 
-  handleBlurContext = () => {
+  handleClickAway(target) {
+    // const { eventTarget } = this.state;
+
+    // eventTarget.classList.remove('edit');
+
+    //  this.setState({ eventTarget: null });
+
+    if (target.classList.contains('editable')) return;
+
+    this.setState({ isHovering: false });
+  }
+
+  handleBlurContext() {
     const { eventTarget, context } = this.state;
-    console.log(eventTarget);
 
     eventTarget.textContent = context;
 
     this.submit(this.templateRef.current.children[0].outerHTML);
   }
 
-  handleChangeCommon = name => ({ target }) => {
-    this.setState({ [name]: target.value });
-  };
+  handleChangeContext({ target }) {
+    this.setState({ context: target.value });
+  }
 
-  handleChangeFontSize = ({ target }) => {
+  handleChangeFontSize({ target }) {
     const { eventTarget } = this.state;
 
     this.setState({ fontSize: target.value });
@@ -102,24 +106,10 @@ class TemplateDetails extends Component {
     this.submit(this.templateRef.current.children[0].outerHTML);
   }
 
-  submit = (values) => {
+  submit(values) {
     const { updateTemplate, templateDetails: { id } } = this.props;
 
-    console.log(values);
-
-    updateTemplate(id, values);
-  }
-
-  handleClickAway = (target) => {
-    const { eventTarget } = this.state;
-
-    eventTarget.classList.remove('edit');
-
-    this.setState({ eventTarget: null });
-
-    if (target.classList.contains('editable')) return;
-
-    this.setState({ isHovering: false });
+    // updateTemplate(id, values);
   }
 
   render() {
@@ -152,7 +142,7 @@ class TemplateDetails extends Component {
         <p>
           {`Modified: ${new Date(modified).toLocaleString()}`}
         </p>
-        {<div ref={this.templateRef} dangerouslySetInnerHTML={{ __html: template }} />}
+        <div ref={this.templateRef} dangerouslySetInnerHTML={{ __html: template }} />
       </React.Fragment>
     );
   }

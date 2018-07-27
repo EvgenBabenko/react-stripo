@@ -2,14 +2,9 @@ import React, { Component } from 'react';
 import T from 'prop-types';
 import onClickOutside from 'react-onclickoutside';
 import { withStyles } from '@material-ui/core/styles';
-import { Link } from 'react-router-dom';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Input from '@material-ui/core/Input';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
@@ -31,26 +26,22 @@ class FloatingPanel extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-    };
-
-    // this.handleChange = this.handleChange.bind(this);
+    this.handleBlur = this.handleBlur.bind(this);
+    this.handleClickOutside = this.handleClickOutside.bind(this);
   }
 
-  handleBlur = () => {
+  handleBlur() {
     const { handleBlurContext } = this.props;
 
     handleBlurContext();
   }
 
-  handleClickOutside = ({ target }) => {
+  handleClickOutside({ target }) {
     const { handleClickAway } = this.props;
 
     this.handleBlur();
 
     handleClickAway(target);
-
-    console.log('onClickOutside() method called', target);
   }
 
   render() {
@@ -68,30 +59,15 @@ class FloatingPanel extends Component {
           value={context}
           onBlur={this.handleBlur}
           onChange={handleChangeContext}
-          margin="normal"
         />
-        {/* <Input
-          // defaultValue="Hello world"
-          // onInput={handleInput}
-          onBlur={handleBlur}
-          value={value}
-          onChange={handleInput}
-          inputProps={{
-            'aria-label': 'Description',
-          }}
-        /> */}
         <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="age-simple">
+          <InputLabel>
             Font-size
           </InputLabel>
           <Select
             native
             value={fontSize}
             onChange={handleChangeFontSize}
-            inputProps={{
-              name: 'age',
-              id: 'age-simple',
-            }}
           >
             {mapFontSize.map(item => (
               <option key={item} value={item}>
