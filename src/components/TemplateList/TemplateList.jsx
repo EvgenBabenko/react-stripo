@@ -3,7 +3,8 @@ import T from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 
-import Template from '../Template/Template';
+import Template from './Template/Template';
+import Loading from '../Loading/Loading';
 
 const styles = {
   templateListWrapper: {
@@ -22,14 +23,16 @@ const TemplateList = (props) => {
       {templateList.length
         ? (
           <List component="div" className={classes.templateListWrapper}>
-            {templateList.map(template => <Template key={template.id} {...template} {...othersProps} />)}
+            {templateList.map(template => (
+              <Template
+                key={template.id}
+                {...template}
+                {...othersProps}
+              />
+            ))}
           </List>
         )
-        : (
-          <p>
-            Loading...
-          </p>
-        )
+        : <Loading />
       }
     </React.Fragment>
   );

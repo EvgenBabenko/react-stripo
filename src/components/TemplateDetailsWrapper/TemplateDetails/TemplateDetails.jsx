@@ -1,9 +1,19 @@
 import React, { Component } from 'react';
 import T from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 
-import FloatingPanel from '../FloatingPanel/FloatingPanel';
-
+import FloatingPanel from './FloatingPanel/FloatingPanel';
+import parseStyle from '../../../utils/parseStyle';
 import './index.css';
+
+const styles = {
+  templateDetailsWrapper: {
+    display: 'flex',
+    flexDirection: 'column',
+    margin: '0 auto',
+    width: '85%',
+  },
+};
 
 class TemplateDetails extends Component {
   constructor(props) {
@@ -14,6 +24,7 @@ class TemplateDetails extends Component {
       fontSize: '',
       context: '',
       eventTarget: null,
+      template: this.props.templateDetails.template,
     };
 
     this.templateRef = React.createRef();
@@ -41,17 +52,6 @@ class TemplateDetails extends Component {
     });
   }
 
-  parseStyle = (string) => {
-    const regex = /([\w-]*)\s*:\s*([^;]*)/g;
-    let match;
-    const properties = {};
-    while (match = regex.exec(string)) {
-      properties[match[1]] = match[2].trim();
-    }
-
-    return properties;
-  }
-
   handleClick({ target }) {
     // target.classList.add('edit');
 
@@ -62,7 +62,7 @@ class TemplateDetails extends Component {
     });
 
     if (target.hasAttribute('style')) {
-      const styleObject = this.parseStyle(target.getAttribute('style'));
+      const styleObject = parseStyle(target.getAttribute('style'));
 
       this.setState({ fontSize: styleObject['font-size'] });
     } else {
@@ -83,11 +83,17 @@ class TemplateDetails extends Component {
   }
 
   handleBlurContext() {
-    const { eventTarget, context } = this.state;
+    const { eventTarget, context, template } = this.state;
 
     eventTarget.textContent = context;
 
-    this.submit(this.templateRef.current.children[0].outerHTML);
+    const newTemplate = this.templateRef.current.children[0].outerHTML;
+
+    if (template === newTemplate) return;
+
+    this.setState({ template: newTemplate });
+
+    this.submit(newTemplate);
   }
 
   handleChangeContext({ target }) {
@@ -95,7 +101,7 @@ class TemplateDetails extends Component {
   }
 
   handleChangeFontSize({ target }) {
-    const { eventTarget } = this.state;
+    const { eventTarget, template } = this.state;
 
     this.setState({ fontSize: target.value });
 
@@ -103,7 +109,13 @@ class TemplateDetails extends Component {
 
     eventTarget.style.fontSize = target.value;
 
-    this.submit(this.templateRef.current.children[0].outerHTML);
+    const newTemplate = this.templateRef.current.children[0].outerHTML;
+
+    if (template === newTemplate) return;
+
+    this.setState({ template: newTemplate });
+
+    this.submit(newTemplate);
   }
 
   submit(values) {
@@ -113,11 +125,7 @@ class TemplateDetails extends Component {
   }
 
   render() {
-    const {
-      templateDetails: {
-        name, modified, id, template,
-      },
-    } = this.props;
+    const { classes, templateDetails: { name, modified, template } } = this.props;
     const { isHovering } = this.state;
 
     return (
@@ -133,16 +141,15 @@ class TemplateDetails extends Component {
             />
           )
         }
-        <p>
-          {id}
-        </p>
-        <p>
-          {name}
-        </p>
-        <p>
-          {`Modified: ${new Date(modified).toLocaleString()}`}
-        </p>
-        <div ref={this.templateRef} dangerouslySetInnerHTML={{ __html: template }} />
+        <div className={classes.templateDetailsWrapper}>
+          <h2>
+            {`Template name: ${name}`}
+          </h2>
+          <p>
+            {`Modified: ${new Date(modified).toLocaleString()}`}
+          </p>
+          <div ref={this.templateRef} dangerouslySetInnerHTML={{ __html: template }} />
+        </div>
       </React.Fragment>
     );
   }
@@ -151,6 +158,7 @@ class TemplateDetails extends Component {
 TemplateDetails.propTypes = {
   templateDetails: T.objectOf(T.any).isRequired,
   updateTemplate: T.func.isRequired,
+  classes: T.objectOf(T.any).isRequired,
 };
 
-export default TemplateDetails;
+export default withStyles(styles)(TemplateDetails);

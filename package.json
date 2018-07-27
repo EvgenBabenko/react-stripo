@@ -2,6 +2,7 @@
   "name": "react-stripo",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://evgenbabenko.github.io/react-stripo",
   "dependencies": {
     "@material-ui/core": "^1.4.1",
     "@material-ui/icons": "^2.0.0",
@@ -17,7 +18,8 @@
     "react-scripts": "1.1.4",
     "redux": "^4.0.0",
     "redux-devtools-extension": "^2.13.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "reselect": "^3.0.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -25,7 +27,8 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "eslint ./src",
-    "lintfix": "eslint ./src --fix"
+    "lintfix": "eslint ./src --fix",
+    "deploy": "gh-pages -d build"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.6",
@@ -33,6 +36,7 @@
     "eslint-config-airbnb": "^17.0.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
-    "eslint-plugin-react": "^7.10.0"
+    "eslint-plugin-react": "^7.10.0",
+    "gh-pages": "^1.2.0"
   }
 }

@@ -3,8 +3,13 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import T from 'prop-types';
 
-import TemplateDetails from '../../../components/Templates/TemplateDetails/TemplateDetails';
-import { getTemplateDetails, clearTemplateDetails, updateTemplate } from '../../../store/actions/templateActions';
+import TemplateDetailsWrapper from '../../components/TemplateDetailsWrapper/TemplateDetailsWrapper';
+import {
+  getTemplateDetails,
+  clearTemplateDetails,
+  updateTemplate,
+  getTemplateList,
+} from '../../store/actions/templateActions';
 
 class TemplateDetailsContainer extends Component {
   constructor(props) {
@@ -18,9 +23,9 @@ class TemplateDetailsContainer extends Component {
   componentDidMount() {
     const { match: { params: { id } } } = this.props;
 
-    const { dispatch, templateDetails } = this.props;
+    const { dispatch, templateList } = this.props;
 
-    if (templateDetails) return;
+    if (!templateList.length) dispatch(getTemplateList());
 
     dispatch(getTemplateDetails(parseInt(id, 10)));
   }
@@ -32,33 +37,19 @@ class TemplateDetailsContainer extends Component {
   }
 
   render() {
-    const { templateDetails } = this.props;
-
-    return (
-      templateDetails
-        ? <TemplateDetails {...this.props} {...this.boundActionCreators} />
-        : (
-          <h1>
-            Loading...
-          </h1>
-        )
-    );
+    return <TemplateDetailsWrapper {...this.props} {...this.boundActionCreators} />;
   }
 }
 
 const mapStateToProps = state => ({
   templateDetails: state.templates.templateDetails,
-  activeTarget: state.templates.activeTarget,
+  templateList: state.templates.templateList,
 });
 
 TemplateDetailsContainer.propTypes = {
   dispatch: T.func.isRequired,
   match: T.objectOf(T.any).isRequired,
-  templateDetails: T.objectOf(T.any),
-};
-
-TemplateDetailsContainer.defaultProps = {
-  templateDetails: null,
+  templateList: T.arrayOf(T.any).isRequired,
 };
 
 export default connect(mapStateToProps)(TemplateDetailsContainer);

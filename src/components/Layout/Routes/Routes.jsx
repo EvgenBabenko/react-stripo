@@ -3,11 +3,11 @@ import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'react-router-redux';
 
 import history from '../../../helpers/history';
-import TemplateListContainer from '../../../containers/Templates/TemplateListContainer/TemplateListContainer';
-import TemplateDetailsContainer from '../../../containers/Templates/TemplateDetailsContainer/TemplateDetailsContainer';
-import NotFound from '../../404/404';
+import TemplateListContainer from '../../../containers/TemplateListContainer/TemplateListContainer';
+import TemplateDetailsContainer from '../../../containers/TemplateDetailsContainer/TemplateDetailsContainer';
+import NotFound from './404/404';
 
-const Routing = () => (
+const Routes = () => (
   <ConnectedRouter history={history}>
     <Switch>
       <Route exact path="/" component={TemplateListContainer} />
@@ -17,4 +17,4 @@ const Routing = () => (
   </ConnectedRouter>
 );
 
-export default Routing;
+export default Routes;

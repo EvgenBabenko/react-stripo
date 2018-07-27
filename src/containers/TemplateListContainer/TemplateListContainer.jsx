@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import T from 'prop-types';
 
-import CommentList from '../../../components/Templates/TemplateList/TemplateList';
-import { getTemplateList } from '../../../store/actions/templateActions';
+import TemplateList from '../../components/TemplateList/TemplateList';
+import { getTemplateList } from '../../store/actions/templateActions';
 
 class TemplateListContainer extends Component {
   componentDidMount() {
@@ -15,7 +15,7 @@ class TemplateListContainer extends Component {
   }
 
   render() {
-    return <CommentList {...this.props} />;
+    return <TemplateList {...this.props} />;
   }
 }
 
