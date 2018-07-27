@@ -18,7 +18,9 @@ class TemplateListContainer extends Component {
   }
 
   componentDidMount() {
-    const { dispatch } = this.props;
+    const { dispatch, templateList } = this.props;
+
+    if (templateList.length) return;
 
     dispatch(getTemplateList());
   }
@@ -38,6 +40,7 @@ const mapStateToProps = state => ({
 
 TemplateListContainer.propTypes = {
   dispatch: T.func.isRequired,
+  templateList: T.arrayOf(T.any).isRequired,
 };
 
 export default connect(mapStateToProps)(TemplateListContainer);

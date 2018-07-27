@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import { bindActionCreators } from 'redux';
+import { bindActionCreators } from 'redux';
 import T from 'prop-types';
 
 import TemplateDetails from '../../../components/Templates/TemplateDetails/TemplateDetails';
-import { getTemplateDetails, clearTemplateDetails } from '../../../store/actions/templateActions';
+import { getTemplateDetails, clearTemplateDetails, updateTemplate } from '../../../store/actions/templateActions';
 
 class TemplateDetailsContainer extends Component {
   constructor(props) {
@@ -12,7 +12,7 @@ class TemplateDetailsContainer extends Component {
 
     const { dispatch } = props;
 
-    // this.boundActionCreators = bindActionCreators({ updateTask }, dispatch);
+    this.boundActionCreators = bindActionCreators({ updateTemplate }, dispatch);
   }
 
   componentDidMount() {
@@ -34,7 +34,7 @@ class TemplateDetailsContainer extends Component {
 
     return (
       templateDetails
-        ? <TemplateDetails {...this.props} />
+        ? <TemplateDetails {...this.props} {...this.boundActionCreators} />
         : (
           <h1>
             Loading...
@@ -46,6 +46,7 @@ class TemplateDetailsContainer extends Component {
 
 const mapStateToProps = state => ({
   templateDetails: state.templates.templateDetails,
+  activeTarget: state.templates.activeTarget,
 });
 
 TemplateDetailsContainer.propTypes = {

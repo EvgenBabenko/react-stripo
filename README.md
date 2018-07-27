@@ -5,7 +5,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 Current technologies stack:
 * React
 * Redux
-* Material-ui
+* Material-UI
 
 ## Instruction
 

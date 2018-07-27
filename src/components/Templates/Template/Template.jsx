@@ -1,19 +1,28 @@
 import React from 'react';
 import T from 'prop-types';
 import { Link } from 'react-router-dom';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+
+import history from '../../../helpers/history';
 
 const Template = (props) => {
   const { name, modified, id } = props;
 
+  function handleRedirect() {
+    history.push(`/template/${id}`);
+  }
+
   return (
-    <div>
-      <Link to={`/template/${id}`}>
-        {name}
-      </Link>
-      <p>
-        {`Modified: ${new Date(modified).toLocaleString()}`}
-      </p>
-    </div>
+    <ListItem
+      button
+      onClick={handleRedirect}
+    >
+      <ListItemText
+        primary={name}
+        secondary={`Modified: ${new Date(modified).toLocaleString()}`}
+      />
+    </ListItem>
   );
 };
 
