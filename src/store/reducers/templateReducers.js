@@ -5,6 +5,7 @@ const initialState = {
   isRequest: false,
   templateList: [],
   templateDetails: null,
+  error: null,
 };
 
 const actions = {

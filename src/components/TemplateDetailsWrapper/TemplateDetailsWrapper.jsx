@@ -18,7 +18,11 @@ const TemplateDetailsWrapper = (props) => {
 };
 
 TemplateDetailsWrapper.propTypes = {
-  templateDetails: T.objectOf(T.any).isRequired,
+  templateDetails: T.objectOf(T.any),
+};
+
+TemplateDetailsWrapper.defaultProps = {
+  templateDetails: null,
 };
 
 export default TemplateDetailsWrapper;

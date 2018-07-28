@@ -19,7 +19,7 @@ const Template = (props) => {
     >
       <ListItemText
         primary={name}
-        secondary={`Modified: ${new Date(modified).toLocaleString()}`}
+        secondary={`Last modified: ${new Date(modified).toLocaleString()}`}
       />
     </ListItem>
   );

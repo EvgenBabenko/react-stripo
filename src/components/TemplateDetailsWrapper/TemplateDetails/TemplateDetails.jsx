@@ -3,7 +3,8 @@ import T from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
 import FloatingPanel from './FloatingPanel/FloatingPanel';
-import parseStyle from '../../../utils/parseStyle';
+import parseInlineStyleToObject from '../../../utils/parseInlineStyleToObject';
+import isStringsEqual from '../../../helpers/isStringsEqual';
 import './index.css';
 
 const styles = {
@@ -19,12 +20,14 @@ class TemplateDetails extends Component {
   constructor(props) {
     super(props);
 
+    const { templateDetails: { template } } = this.props;
+
     this.state = {
       isHovering: false,
       fontSize: '',
       context: '',
       eventTarget: null,
-      template: this.props.templateDetails.template,
+      template,
     };
 
     this.templateRef = React.createRef();
@@ -34,8 +37,8 @@ class TemplateDetails extends Component {
     this.handleBlurContext = this.handleBlurContext.bind(this);
     this.handleChangeContext = this.handleChangeContext.bind(this);
     this.handleChangeFontSize = this.handleChangeFontSize.bind(this);
-    this.submit = this.submit.bind(this);
     this.handleClickAway = this.handleClickAway.bind(this);
+    this.checkTemplateForSubmit = this.checkTemplateForSubmit.bind(this);
   }
 
   componentDidMount() {
@@ -53,7 +56,7 @@ class TemplateDetails extends Component {
   }
 
   handleClick({ target }) {
-    // target.classList.add('edit');
+    target.classList.add('edit');
 
     this.setState({
       context: target.textContent.trim(),
@@ -62,7 +65,7 @@ class TemplateDetails extends Component {
     });
 
     if (target.hasAttribute('style')) {
-      const styleObject = parseStyle(target.getAttribute('style'));
+      const styleObject = parseInlineStyleToObject(target.getAttribute('style'));
 
       this.setState({ fontSize: styleObject['font-size'] });
     } else {
@@ -71,11 +74,9 @@ class TemplateDetails extends Component {
   }
 
   handleClickAway(target) {
-    // const { eventTarget } = this.state;
+    const { eventTarget } = this.state;
 
-    // eventTarget.classList.remove('edit');
-
-    //  this.setState({ eventTarget: null });
+    eventTarget.classList.remove('edit');
 
     if (target.classList.contains('editable')) return;
 
@@ -83,17 +84,11 @@ class TemplateDetails extends Component {
   }
 
   handleBlurContext() {
-    const { eventTarget, context, template } = this.state;
+    const { eventTarget, context } = this.state;
 
     eventTarget.textContent = context;
 
-    const newTemplate = this.templateRef.current.children[0].outerHTML;
-
-    if (template === newTemplate) return;
-
-    this.setState({ template: newTemplate });
-
-    this.submit(newTemplate);
+    this.checkTemplateForSubmit();
   }
 
   handleChangeContext({ target }) {
@@ -101,31 +96,34 @@ class TemplateDetails extends Component {
   }
 
   handleChangeFontSize({ target }) {
-    const { eventTarget, template } = this.state;
+    const { eventTarget } = this.state;
 
     this.setState({ fontSize: target.value });
 
-    // eventTarget.setAttribute('font-size', target.value);
-
     eventTarget.style.fontSize = target.value;
+
+    this.checkTemplateForSubmit();
+  }
+
+  checkTemplateForSubmit() {
+    const { template, eventTarget } = this.state;
+    const { updateTemplate, templateDetails: { id } } = this.props;
+
+    eventTarget.classList.remove('edit');
 
     const newTemplate = this.templateRef.current.children[0].outerHTML;
 
-    if (template === newTemplate) return;
+    if (isStringsEqual(template, newTemplate)) return;
 
     this.setState({ template: newTemplate });
 
-    this.submit(newTemplate);
-  }
+    updateTemplate(id, newTemplate);
 
-  submit(values) {
-    const { updateTemplate, templateDetails: { id } } = this.props;
-
-    updateTemplate(id, values);
+    eventTarget.classList.add('edit');
   }
 
   render() {
-    const { classes, templateDetails: { name, modified, template } } = this.props;
+    const { classes, templateDetails: { name, template } } = this.props;
     const { isHovering } = this.state;
 
     return (
@@ -145,9 +143,6 @@ class TemplateDetails extends Component {
           <h2>
             {`Template name: ${name}`}
           </h2>
-          <p>
-            {`Modified: ${new Date(modified).toLocaleString()}`}
-          </p>
           <div ref={this.templateRef} dangerouslySetInnerHTML={{ __html: template }} />
         </div>
       </React.Fragment>
