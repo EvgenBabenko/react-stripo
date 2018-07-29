@@ -7,7 +7,7 @@ import store from './store/store';
 
 const App = () => (
   <Provider store={store}>
-    <BrowserRouter>
+    <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Layout />
     </BrowserRouter>
   </Provider>
