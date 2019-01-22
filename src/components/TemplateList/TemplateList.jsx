@@ -4,7 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 
 import Template from './Template/Template';
-import Loading from '../Loading/Loading';
 
 const styles = {
   templateListWrapper: {
@@ -15,28 +14,19 @@ const styles = {
   },
 };
 
-const TemplateList = (props) => {
-  const { templateList, classes, ...othersProps } = props;
-
-  return (
-    <React.Fragment>
-      {templateList.length
-        ? (
-          <List component="div" className={classes.templateListWrapper}>
-            {templateList.map(template => (
-              <Template
-                key={template.id}
-                {...template}
-                {...othersProps}
-              />
-            ))}
-          </List>
-        )
-        : <Loading />
-      }
-    </React.Fragment>
-  );
-};
+const TemplateList = ({
+  templateList,
+  classes,
+}) => (
+  <List component="div" className={classes.templateListWrapper}>
+    {templateList.map(template => (
+      <Template
+        key={template.id}
+        {...template}
+      />
+    ))}
+  </List>
+);
 
 TemplateList.propTypes = {
   templateList: T.arrayOf(T.any).isRequired,

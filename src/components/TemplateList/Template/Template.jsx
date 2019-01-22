@@ -5,9 +5,11 @@ import ListItemText from '@material-ui/core/ListItemText';
 
 import history from '../../../helpers/history';
 
-const Template = (props) => {
-  const { name, modified, id } = props;
-
+const Template = ({
+  name,
+  modified,
+  id,
+}) => {
   function handleRedirect() {
     history.push(`/template/${id}`);
   }

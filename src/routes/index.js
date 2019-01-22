@@ -2,10 +2,10 @@ import React from 'react';
 import { Route, Switch } from 'react-router';
 import { ConnectedRouter } from 'react-router-redux';
 
-import history from '../../../helpers/history';
-import TemplateListContainer from '../../../containers/TemplateListContainer/TemplateListContainer';
-import TemplateDetailsContainer from '../../../containers/TemplateDetailsContainer/TemplateDetailsContainer';
-import NotFound from './404/404';
+import history from 'helpers/history';
+import TemplateListContainer from 'components/TemplateList/TemplateListContainer';
+import TemplateDetailsContainer from 'components/TemplateDetails/TemplateDetailsContainer';
+import NotFound from 'components/404/404';
 
 const Routes = () => (
   <ConnectedRouter history={history}>
