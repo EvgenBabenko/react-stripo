@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import T from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
-import FloatingPanel from './FloatingPanel/FloatingPanel';
-import parseInlineStyleToObject from '../../../utils/parseInlineStyleToObject';
-import isStringsEqual from '../../../helpers/isStringsEqual';
+import parseInlineStyleToObject from 'utils/parseInlineStyleToObject';
+import isStringsEqual from 'helpers/isStringsEqual';
+import FloatingPanelContainer from './FloatingPanel/FloatingPanelContainer';
 import './index.css';
 
 const styles = {
@@ -107,7 +107,7 @@ class TemplateDetails extends Component {
 
   checkTemplateForSubmit() {
     const { template, eventTarget } = this.state;
-    const { updateTemplate, templateDetails: { id } } = this.props;
+    const { templateActions: { updateTemplate }, templateDetails: { id } } = this.props;
 
     eventTarget.classList.remove('edit');
 
@@ -130,7 +130,7 @@ class TemplateDetails extends Component {
       <React.Fragment>
         {isHovering
           && (
-            <FloatingPanel
+            <FloatingPanelContainer
               handleClickAway={this.handleClickAway}
               handleBlurContext={this.handleBlurContext}
               handleChangeFontSize={this.handleChangeFontSize}
@@ -152,7 +152,7 @@ class TemplateDetails extends Component {
 
 TemplateDetails.propTypes = {
   templateDetails: T.objectOf(T.any).isRequired,
-  updateTemplate: T.func.isRequired,
+  templateActions: T.objectOf(T.func).isRequired,
   classes: T.objectOf(T.any).isRequired,
 };
 

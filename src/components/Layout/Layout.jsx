@@ -1,7 +1,7 @@
 import React from 'react';
 
+import Routes from 'routes';
 import Header from './Header/Header';
-import Routes from './Routes/Routes';
 
 const Layuot = () => (
   <React.Fragment>
